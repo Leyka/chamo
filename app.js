@@ -37,7 +37,8 @@ db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='leaderboard'
            '(id INTEGER PRIMARY KEY AUTOINCREMENT, ' +
            'name VARCHAR(255), ' +
            'date TEXT, ' +
-           'time INTEGER)', function(err) {
+           'time INTEGER, ' +
+           'ip VARCHAR(100))', function(err) {
       if(err !== null) {
         console.log(err);
       }

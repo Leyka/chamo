@@ -6,7 +6,6 @@ block content
     section.bg-main
       h1.main-title CHÂMO
       h3 Challenge your reactivity
-      h4=ip
       section.instructions
         p
           strong instructions
@@ -33,7 +32,7 @@ block content
           tbody
             - var i = 1
             each score in scores
-              tr(class="tr-blue")
+              tr(class=(score.ip === ip) ? "tr-active" : "tr-blue")
                 td=i
                 td
                   case score.name.toLowerCase()

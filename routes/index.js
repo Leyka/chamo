@@ -3,10 +3,10 @@ var router = express.Router();
 var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('db/leaderboard.db');
 var moment = require('moment');
-
+var ip;
 /* GET home page and top 5 users scores */
 router.get('/', function(req, res, next) {
-  var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   var query = "SELECT * FROM leaderboard ORDER BY time LIMIT 5";
   db.all(query, function(err, rows){
     // errors?
@@ -21,13 +21,14 @@ router.get('/', function(req, res, next) {
 });
 /* GET leaderboard page */
 router.get('/leaderboard', function(req, res, next){
+  ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   var query = "SELECT * FROM leaderboard ORDER BY time";
   db.all(query, function(err, rows){
     if (err !== null) {
       next(err);
     }
     else {
-      res.render('leaderboard', {title: 'Leaderboard', scores: rows});
+      res.render('leaderboard', {title: 'Leaderboard', scores: rows, ip:ip});
     }
   });
 });
@@ -77,7 +78,6 @@ router.post('/check', function(req, res, next) {
 
 /* POST save user score in leaderboard */
 router.post('/save', function(req, res, next) {
-
   // To refactor/Tempfix... After stringify we get '{ '{"name":"j","time":979}': '' }'
   // So we parse the first key which is '{"name":"j","time":979}' to json and get paramters (name and time)
   var data = JSON.parse(Object.keys(req.body)[0]);
@@ -87,12 +87,13 @@ router.post('/save', function(req, res, next) {
     name = "Anonymous";
   }
   var date = moment().format("MMM Do YYYY");
+  ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   // Make sure to not save the same data
-  var query = "SELECT * FROM leaderboard WHERE name=? AND time=?";
-  db.get(query, name, time, function(err, row){
+  var query = "SELECT * FROM leaderboard WHERE name=? AND time=? AND ip=?";
+  db.get(query, name, time, ip, function(err, row){
     if (row === undefined) {
-      var query = "INSERT INTO leaderboard (name,time,date) VALUES(?,?,?)";
-      db.run(query, name, time, date, function(err){
+      var query = "INSERT INTO leaderboard (name,time,date,ip) VALUES(?,?,?,?)";
+      db.run(query, name, time, date, ip, function(err){
         if (err !== null) {
           console.log(err);
           next(err);
