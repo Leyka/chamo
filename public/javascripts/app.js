@@ -21,6 +21,11 @@ sleep(timer).then(() => {
     canclick = true;
     body.style.backgroundColor = '#3D9970';
     h1.innerHTML= "CLICK NOW !";
+
+    setTimeout(function(){
+      document.querySelector('#gif').className="";
+      h1.innerHTML= "CLICK N... OH WAIT..";
+    }, 2000);
 });
 
 // handle click
@@ -35,6 +40,8 @@ html.addEventListener('click', function(e){
     return;
   }
 
+  document.querySelector('#gif').className = "hidden";
+
   var score_div = document.querySelector('#score');
 
   if (!canclick) {
@@ -48,7 +55,7 @@ html.addEventListener('click', function(e){
     clicked = true;
     score_div.className = ''; //remove hidden class
     user_time = end - now;
-    if (user_time > 2000) {
+    if (user_time >= 2000) {
       h1.innerHTML = "zZz..You scored";
     }
     else {

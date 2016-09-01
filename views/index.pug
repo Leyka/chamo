@@ -33,7 +33,7 @@ block content
           tbody
             - var i = 1
             each score in scores
-              tr(class=(score.ip === user_ip) ? "tr-active" : "")
+              tr(class=(score.ip !== user_ip) ? "tr-active" : "tr-blue")
                 td=i
                 td
                   case score.name.toLowerCase()
