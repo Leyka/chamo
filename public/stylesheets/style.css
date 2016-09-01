@@ -81,7 +81,7 @@ td, th {
 #main {
   width: 800px;
   margin: 0 auto;
-  margin-top: 100px;
+  margin-top: 60px;
   text-align: center;
 }
 
@@ -158,7 +158,7 @@ h1.main-title {
   margin-top: 10px;
 }
 .save-leaderboard .form input {
-  padding: 2px;
+  padding: 6px;
 }
 .save-leaderboard .form .save {
   background-color: #a068ff;
@@ -169,6 +169,7 @@ h1.main-title {
   color: #fff;
   cursor: pointer;
   margin-left: 5px;
+  font-size:1.1rem;
 }
 .cow {
   border-radius: 50%;

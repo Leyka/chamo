@@ -2,7 +2,7 @@ extends layout
 
 block content
   body#play
-    section#main
+    section
       strong.new-record.hidden
         i.medium.typcn.typcn-flash
         |  New Record!
@@ -29,8 +29,8 @@ block content
         h3 Holy cow! You made it!
         p save your score in the leaderboard
         .form
-          label Your name:
-          input#name(type='text', name='name')
+          label Name:
+          input#name(type='text', name='name', placeholder="Type your name")
           button.save(type='button') Save
         img.cow(src='/images/cow.jpg', alt='')
       script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js')
