@@ -88,8 +88,8 @@ router.post('/save', function(req, res, next) {
     name = "Anonymous";
   }
   var date = moment().format("MMM Do YYYY");
-  var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-  
+  //var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  var ip = req.ip; 
   // Make sure to not save the same data
   var query = "SELECT * FROM leaderboard WHERE name=? AND time=? AND ip=?";
   db.get(query, name, time, ip, function(err, row){
