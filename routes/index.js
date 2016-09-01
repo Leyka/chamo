@@ -6,7 +6,8 @@ var moment = require('moment');
 
 /* GET home page and top 5 users scores */
 router.get('/', function(req, res, next) {
-  var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  //var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  var ip = req.ip;
   var query = "SELECT * FROM leaderboard ORDER BY time LIMIT 5";
   db.all(query, function(err, rows){
     // errors?
@@ -89,7 +90,7 @@ router.post('/save', function(req, res, next) {
   }
   var date = moment().format("MMM Do YYYY");
   //var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-  var ip = req.ip; 
+  var ip = req.ip;
   // Make sure to not save the same data
   var query = "SELECT * FROM leaderboard WHERE name=? AND time=? AND ip=?";
   db.get(query, name, time, ip, function(err, row){
