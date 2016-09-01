@@ -89,6 +89,10 @@ td, th {
   width: 40%;
 }
 
+h1.main-title {
+  color: #83ffa4;
+  font-size: 3rem;
+}
 .start-block .fa {
   margin-right: 5px;
 }
