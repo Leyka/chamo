@@ -26,8 +26,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 
-app.enable('trust proxy');
-
 // Database initialization
 db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='leaderboard'",
        function(err, rows) {
