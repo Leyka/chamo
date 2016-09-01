@@ -104,7 +104,7 @@ router.post('/save', function(req, res, next) {
     else {
       console.log("We won't add a new row, already exists.");
     }
-    res.send();
+    res.rediect('/');
   });
 
 });
