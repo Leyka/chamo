@@ -1,5 +1,6 @@
 extends layout
-
+block head
+  link(rel="stylesheet", href="stylesheets/alertify.css")
 block content
   body
     #main
@@ -34,7 +35,12 @@ block content
             each score in scores
               tr
                 td=i
-                td=score.name
+                td
+                  case score.name.toLowerCase()
+                    when "sophie"
+                      <span class="pistachio">S</span><span>o</span><span class="pistachio">p</span><span>h</span><span class="pistachio">i</span><span>e</span>
+                    default
+                      =score.name
                   if i == 1
                     |&nbsp;
                     i.typcn.typcn-heart.medium.gold
@@ -46,4 +52,5 @@ block content
         a(href='http://github.com/leyka')
           h1.typcn.typcn-social-github
           | just.for.fun.
+    script(src='/javascripts/alertify.js')
     script(src='/javascripts/home.js')

@@ -48,7 +48,12 @@ html.addEventListener('click', function(e){
     clicked = true;
     score_div.className = ''; //remove hidden class
     user_time = end - now;
-    h1.innerHTML = "You scored";
+    if (user_time > 2000) {
+      h1.innerHTML = "zZz..You scored";
+    }
+    else {
+      h1.innerHTML = "You scored";
+    }
     document.querySelector(".result").innerHTML = user_time + "ms";
 
     // Check if user can be on leaderboard

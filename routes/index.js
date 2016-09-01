@@ -60,6 +60,8 @@ router.post('/check', function(req, res, next) {
     else {
       // We compare user time with the 'least' great score among the 5 best score
       var query = "SELECT time from (SELECT  time from leaderboard ORDER BY time LIMIT 5) ORDER BY time desc";
+      // 100 120 130 150 200 250 290
+      // 190
       db.get(query, function(err, row){
         // errors?
         if (err !== null) {

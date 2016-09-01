@@ -1,8 +1,15 @@
 extends layout
 
 block content
+  body#err
     h1= message
     h2= error.status
     a(href='/')
       i.typcn.typcn-arrow-left-thick
       |  back to home page
+    .jesus
+      img(src="/images/jesus.gif")
+    footer
+      a(href='http://github.com/leyka')
+        h1.typcn.typcn-social-github
+        | just.for.fun.
