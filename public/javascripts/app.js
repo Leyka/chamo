@@ -31,7 +31,7 @@ sleep(timer).then(() => {
 });
 
 // handle click
-html.addEventListener('click', function(e){
+html.addEventListener('mousedown', function(e){
   var end = Date.now();
 
   if (clicked_earlier) {
