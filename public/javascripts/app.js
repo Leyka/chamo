@@ -115,7 +115,8 @@ save_button.addEventListener('click', function(){
       if (success) {
         // Redirect to home page and show a message that it has been saved
         localStorage.setItem("onleaderboard", true);
-        window.location.href = "/";
+        var data = JSON.parse(req.responseText);
+        window.location.href = data.redirect;
       }
     };
 });
