@@ -23,8 +23,10 @@ sleep(timer).then(() => {
     h1.innerHTML= "CLICK NOW !";
 
     setTimeout(function(){
-      document.querySelector('#gif').className="";
-      h1.innerHTML= "CLICK N... OH WAIT..";
+      if (!clicked) {
+        document.querySelector('#gif').className="";
+        h1.innerHTML= "CLICK N...OH WAIT..";
+      }
     }, 2000);
 });
 
