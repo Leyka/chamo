@@ -2,7 +2,7 @@ var onleaderboard = localStorage.getItem("onleaderboard");
 
 if (onleaderboard && onleaderboard === 'true') {
   //alert('yo! on leaderboard');
-  alertify.logPosition("top right");
-  alertify.delay(4000).success("Congratz! :)");
+  alertify.logPosition("bottom right");
+  alertify.delay(3500).success("What a beast!");
   localStorage.setItem("onleaderboard", false);
 }
