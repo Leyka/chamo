@@ -1,0 +1,30 @@
+extends layout
+
+block content
+  body
+  section#main
+    h1 Leaderboard
+    a(href='/')
+      i.typcn.typcn-arrow-left-thick
+      |  back to home page
+    section.leaderboard
+      table#table-leaderboard.spacy-table
+        thead
+          tr
+            th(style='width:5%') #
+            th(style='width:25%') Date
+            th(style='width:50%') Name
+            th(style='width:20%') Time
+        tbody
+          - var i = 1
+          each score in scores
+            tr
+              td=i
+              td=score.date
+              td=score.name
+              td=score.time + " ms"
+            - i++
+    footer
+      a(href='http://github.com/leyka')
+        h1.typcn.typcn-social-github
+        |  just.for.fun.

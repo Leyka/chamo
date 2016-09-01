@@ -1,0 +1,49 @@
+extends layout
+
+block content
+  body
+    #main
+    section.bg-main
+      h1 [Add title]
+      h3 Test your reaction
+      section.instructions
+        p
+          strong instructions
+          | : once you click on the [start] button, you will see a&nbsp;
+          span.bg-red red
+          |  background.
+        p
+          | Wait until it turns&nbsp;
+          span.bg-green green
+          |  and then click anywhere on your screen. Ready? #glhf
+      section.start-block.center-block
+        a(href='/play') [ START ]
+      section.leaderboard
+        h3.text-center
+          i.medium.typcn.typcn-anchor
+          |  top five&nbsp;
+          i.medium.typcn.typcn-anchor
+        table#table-leaderboard
+          thead
+            tr
+              th(style='width:5%') #
+              th(style='width:75%') Name
+              th(style='width:20%') Time
+          tbody
+            - var i = 1
+            each score in scores
+              tr
+                td=i
+                td=score.name
+                  if i == 1
+                    |&nbsp;
+                    i.typcn.typcn-heart.medium.gold
+                td=score.time + " ms"
+              - i++
+        p.text-center
+          a.small-text(href='/leaderboard') check out the leaderboard
+      footer
+        a(href='http://github.com/leyka')
+          h1.typcn.typcn-social-github
+          | just.for.fun.
+    script(src='/javascripts/home.js')

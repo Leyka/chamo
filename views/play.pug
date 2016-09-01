@@ -1,0 +1,36 @@
+extends layout
+
+block content
+  body#play
+    section#main
+      strong.new-record.hidden
+        i.medium.typcn.typcn-flash
+        |  New Record!
+        i.medium.typcn.typcn-flash
+      h1 Wait for the green background...
+      p.message
+      section#score.hidden
+        p.result
+        a#replay(href='/play')
+          h3
+            i.big.typcn.typcn-refresh
+            |  Replay!
+        p.score
+          | Average:
+          span.avg
+          | ms | Best score:
+          span.best
+          | ms
+        p
+          a.btn-leaderboard(href='/leaderboard') Leaderboard
+      section#save-leaderboard.hidden.save-leaderboard
+        h3 Holy cow! You made it!
+        p save your score in the leaderboard
+        .form
+          label Your name:
+          input#name(type='text', name='name')
+          button.save(type='button') Save
+        img.cow(src='/images/cow.jpg', alt='')
+      script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js')
+      script(src='/javascripts/utils.js')
+      script(src='/javascripts/app.js')
