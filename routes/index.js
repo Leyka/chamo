@@ -89,12 +89,13 @@ router.post('/save', function(req, res, next) {
   }
   var date = moment().format("MMM Do YYYY");
   var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  
   // Make sure to not save the same data
-  var query = "SELECT * FROM leaderboard WHERE name='" + name + "' AND time=" + time;
-  db.get(query, function(err, row){
+  var query = "SELECT * FROM leaderboard WHERE name=? AND time=? AND ip=?";
+  db.get(query, name, time, ip, function(err, row){
     if (row === undefined) {
-      var query = "INSERT INTO leaderboard (name,time,date,ip) VALUES ('" + name + "'," + time + ", '" + date + "', '" + ip + "')";
-      db.run(query, function(err){
+      var query = "INSERT INTO leaderboard (name,time,date,ip) VALUES(?,?,?,?)";
+      db.run(query, name, time, date, ip, function(err){
         if (err !== null) {
           console.log(err);
           next(err);
@@ -111,6 +112,5 @@ router.post('/save', function(req, res, next) {
   });
 
 });
-
 
 module.exports = router;
