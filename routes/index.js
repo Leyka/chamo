@@ -15,7 +15,7 @@ router.get('/', function(req, res, next) {
     }
     // render view
     else {
-      res.render('index', { title: 'CHÂMO', scores:rows, user_ip: ip});
+      res.render('index', { title: 'CHÂMO - Challenge Your Reactivity', scores:rows, user_ip: ip});
     }
   });
 });
