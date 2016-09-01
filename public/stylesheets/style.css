@@ -181,6 +181,10 @@ h1.main-title {
   margin-top: 20px;
   width: 600px;
 }
+.replay {
+  font-size: 3rem;
+  color: #8dffd1;
+}
 
 /* 404 */
 #err {
