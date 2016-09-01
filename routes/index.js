@@ -6,7 +6,6 @@ var moment = require('moment');
 
 /* GET home page and top 5 users scores */
 router.get('/', function(req, res, next) {
-  var ip = req.connection.remoteAddress;
   var query = "SELECT * FROM leaderboard ORDER BY time LIMIT 5";
   db.all(query, function(err, rows){
     // errors?
@@ -15,20 +14,19 @@ router.get('/', function(req, res, next) {
     }
     // render view
     else {
-      res.render('index', { title: 'CHÂMO - Challenge Your Reactivity', scores:rows, user_ip: ip});
+      res.render('index', { title: 'CHÂMO - Challenge Your Reactivity', scores:rows});
     }
   });
 });
 /* GET leaderboard page */
 router.get('/leaderboard', function(req, res, next){
-  var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   var query = "SELECT * FROM leaderboard ORDER BY time";
   db.all(query, function(err, rows){
     if (err !== null) {
       next(err);
     }
     else {
-      res.render('leaderboard', {title: 'Leaderboard', scores: rows, user_ip: ip});
+      res.render('leaderboard', {title: 'Leaderboard', scores: rows});
     }
   });
 });
@@ -88,14 +86,12 @@ router.post('/save', function(req, res, next) {
     name = "Anonymous";
   }
   var date = moment().format("MMM Do YYYY");
-  //var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-  var ip = req.ip;
   // Make sure to not save the same data
-  var query = "SELECT * FROM leaderboard WHERE name=? AND time=? AND ip=?";
-  db.get(query, name, time, ip, function(err, row){
+  var query = "SELECT * FROM leaderboard WHERE name=? AND time=?";
+  db.get(query, name, time, function(err, row){
     if (row === undefined) {
-      var query = "INSERT INTO leaderboard (name,time,date,ip) VALUES(?,?,?,?)";
-      db.run(query, name, time, date, ip, function(err){
+      var query = "INSERT INTO leaderboard (name,time,date) VALUES(?,?,?)";
+      db.run(query, name, time, date, function(err){
         if (err !== null) {
           console.log(err);
           next(err);
