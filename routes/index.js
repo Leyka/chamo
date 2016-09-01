@@ -6,6 +6,7 @@ var moment = require('moment');
 
 /* GET home page and top 5 users scores */
 router.get('/', function(req, res, next) {
+  var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   var query = "SELECT * FROM leaderboard ORDER BY time LIMIT 5";
   db.all(query, function(err, rows){
     // errors?
@@ -14,7 +15,7 @@ router.get('/', function(req, res, next) {
     }
     // render view
     else {
-      res.render('index', { title: 'CHÂMO - Challenge Your Reactivity', scores:rows});
+      res.render('index', { title: 'CHÂMO - Challenge Your Reactivity', scores:rows, ip:ip});
     }
   });
 });
