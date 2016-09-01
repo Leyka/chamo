@@ -35,10 +35,11 @@ db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='leaderboard'
   }
   else if(rows === undefined) {
     db.run('CREATE TABLE "leaderboard" ' +
-           '("id" INTEGER PRIMARY KEY AUTOINCREMENT, ' +
-           '"name" VARCHAR(255), ' +
-           '"date" TEXT, ' +
-           'time INTEGER)', function(err) { // TODO : add type DATE
+           '(id INTEGER PRIMARY KEY AUTOINCREMENT, ' +
+           'name VARCHAR(255), ' +
+           'date TEXT, ' +
+           'time INTEGER,' +
+           'ip VARCHAR(100))', function(err) {
       if(err !== null) {
         console.log(err);
       }

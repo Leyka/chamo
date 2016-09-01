@@ -5,7 +5,7 @@ block content
   body
     #main
     section.bg-main
-      h1 [Add title]
+      h1 Rrreact
       h3 Test your reaction
       section.instructions
         p
@@ -16,7 +16,7 @@ block content
         p
           | Wait until it turns&nbsp;
           span.bg-green green
-          |  and then click anywhere on your screen. Ready? #glhf
+          |  then click anywhere on your screen. Ready? #glhf!
       section.start-block.center-block
         a(href='/play') [ START ]
       section.leaderboard
@@ -33,7 +33,7 @@ block content
           tbody
             - var i = 1
             each score in scores
-              tr
+              tr(class=(score.ip === user_ip) ? "tr-active" : "")
                 td=i
                 td
                   case score.name.toLowerCase()

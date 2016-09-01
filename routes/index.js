@@ -6,7 +6,7 @@ var moment = require('moment');
 
 /* GET home page and top 5 users scores */
 router.get('/', function(req, res, next) {
-
+  var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   var query = "SELECT * FROM leaderboard ORDER BY time LIMIT 5";
   db.all(query, function(err, rows){
     // errors?
@@ -15,26 +15,26 @@ router.get('/', function(req, res, next) {
     }
     // render view
     else {
-      res.render('index', { title: 'Reflex Master', scores:rows });
+      res.render('index', { title: 'Reflex Master', scores:rows, user_ip: ip});
     }
   });
 });
 /* GET leaderboard page */
 router.get('/leaderboard', function(req, res, next){
+  var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   var query = "SELECT * FROM leaderboard ORDER BY time";
   db.all(query, function(err, rows){
     if (err !== null) {
       next(err);
     }
     else {
-      res.render('leaderboard', {title: 'Leaderboard', scores: rows});
+      res.render('leaderboard', {title: 'Leaderboard', scores: rows, user_ip: ip});
     }
   });
 });
 
 /* GET play page */
 router.get('/play', function(req, res, next) {
-
   res.render('play', { title: 'Play' });
 });
 
@@ -88,11 +88,12 @@ router.post('/save', function(req, res, next) {
     name = "Anonymous";
   }
   var date = moment().format("MMM Do YYYY");
+  var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   // Make sure to not save the same data
   var query = "SELECT * FROM leaderboard WHERE name='" + name + "' AND time=" + time;
   db.get(query, function(err, row){
     if (row === undefined) {
-      var query = "INSERT INTO leaderboard (name,time,date) VALUES ('" + name + "'," + time + ", '" + date + "')";
+      var query = "INSERT INTO leaderboard (name,time,date,ip) VALUES ('" + name + "'," + time + ", '" + date + "', '" + ip + "')";
       db.run(query, function(err){
         if (err !== null) {
           console.log(err);

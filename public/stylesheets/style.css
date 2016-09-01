@@ -43,7 +43,7 @@ footer {
 .bg-green{ background-color: #3D9970; padding: 2px;}
 .gold{ color: #f7ea46; }
 .pistachio{ color:#76ffd4; }
-
+.tr-active { background-color: #754192;}
 /* Text */
 h1 { font-size: 2rem; }
 h2 { font-size: 1.7rem; }
