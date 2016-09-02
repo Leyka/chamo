@@ -111,7 +111,9 @@ save_button.addEventListener('click', function(){
 
     var can_save = in_leaderboard === 'true' && data.name && data.time;
     if (!can_save) {
-      alert('Stop it now :)');
+      alertify.alert('Nice try folk!', function(){
+        document.querySelector('.save-leaderboard').className = "hidden save-leaderboard";
+      });
       return false;
     }
 
@@ -122,6 +124,7 @@ save_button.addEventListener('click', function(){
         // Redirect to home page and show a message that it has been saved
         localStorage.setItem("onleaderboard", true);
         var data = JSON.parse(req.responseText);
+        localStorage.setItem("ishacker", data.hacker); // for fun :)
         window.location.href = data.redirect;
       }
     };
