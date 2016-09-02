@@ -6,6 +6,7 @@ var clicked_earlier = false;
 var clicked = false;
 var now;
 var user_time;
+var in_leaderboard;
 
 // DOM
 var html = document.querySelector('html');
@@ -72,7 +73,7 @@ html.addEventListener('mousedown', function(e){
     req.onload = function() {
       var success = req.status >= 200 && req.status < 400;
       if (success) {
-        var in_leaderboard = req.responseText;
+        in_leaderboard = req.responseText;
         // User can register in leaderboard
         if (in_leaderboard === 'true') {
           document.querySelector('#save-leaderboard').className = 'save-leaderboard'; // We remove hidden class
@@ -103,11 +104,16 @@ html.addEventListener('mousedown', function(e){
 
 var save_button = document.querySelector('.save');
 save_button.addEventListener('click', function(){
-
     var data = {
       name: document.querySelector('#name').value,
       time: user_time
     };
+
+    var can_save = in_leaderboard === 'true' && data.name && data.time;
+    if (!can_save) {
+      alert('Stop it now :)');
+      return false;
+    }
 
     setAjaxPost(req, '/save', JSON.stringify(data));
     req.onload = function() {
