@@ -109,7 +109,7 @@ save_button.addEventListener('click', function(){
       time: user_time
     };
 
-    var can_save = in_leaderboard === 'true' && data.name && data.time;
+    var can_save = in_leaderboard === 'true' && data.time;
     if (!can_save) {
       alertify.alert('Nice try folk!', function(){
         document.querySelector('.save-leaderboard').className = "hidden save-leaderboard";

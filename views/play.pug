@@ -33,5 +33,6 @@ block content
           input#name(type='text', name='name', placeholder="Type your name")
           button.save(type='button') Save
         img.cow(src='/images/cow.jpg', alt='')
-      script(src='/javascripts/utils.js')
-      script(src='/javascripts/app.js')
+block scripts
+  script(src='/javascripts/utils.js')
+  script(src='/javascripts/app.js')

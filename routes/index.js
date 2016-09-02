@@ -4,6 +4,7 @@ var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('db/leaderboard.db');
 var moment = require('moment');
 var ip;
+
 /* GET home page and top 5 users scores */
 router.get('/', function(req, res, next) {
   ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
@@ -41,8 +42,12 @@ router.get('/play', function(req, res, next) {
 /* AJAX: Check if user's score can be on leaderboard */
 router.post('/check', function(req, res, next) {
   var time = parseInt(Object.keys(req.body)[0]); // To refactor/Tempfix... Basically, we get a json object ex. {'615': ''}
-  var result = checkIfLeaderboard(time, next);
-  res.send(result);
+  checkIfLeaderboard(time, next, function(response){
+    console.log(response);
+    res.send(response);
+  })
+
+  //res.send(checkIfLeaderboard(time, next));
 });
 
 /* POST save user score in leaderboard */
@@ -54,9 +59,11 @@ router.post('/save', function(req, res, next) {
   var time = parseInt(data.time);
 
   // Recheck if user can be on leaderboard (Obviously, user can hack his time on client side)
-  if (!checkIfLeaderboard(time, next)) {
-    return res.send({redirect: '/', hacker: true});
-  }
+  checkIfLeaderboard(time, next, function(result){
+    if (result === false) {
+      return res.send({redirect: '/', hacker: true});
+    }
+  })
 
   if (!name) {
     name = "Anonymous";
@@ -87,39 +94,48 @@ router.post('/save', function(req, res, next) {
 
 });
 
-function checkIfLeaderboard(time, next) {
+function checkIfLeaderboard(time, next, callback) {
+  var result;
+
   if (!time) {
-    return false;
+    result = false;
+    callback(result);
+  }
+  else {
+    var query = "SELECT COUNT(*) as count FROM leaderboard";
+    db.get(query, function(err, row) {
+      console.log('3- We did a query');
+      // errors?
+      if (err !== null) {
+        console.log(err);
+        next(err);
+      }
+
+      // If we have less than 5 entries in leaderboard, user has automatically a place on leaderboard as we can't compare yet.
+      if (row.count < 5) {
+        result = true;
+        callback(result);
+      }
+      else {
+        // We compare user time with the 'least' great score among the 5 best score
+        var query = "SELECT time from (SELECT  time from leaderboard ORDER BY time LIMIT 5) ORDER BY time desc";
+        // 100 120 130 150 200 250 290
+        // 190
+        db.get(query, function(err, row){
+          // errors?
+          if (err !== null) {
+            console.log(err);
+            next(err);
+          }
+          else {
+            result = time < row.time;
+          }
+          callback(result);
+        });
+      }
+    });
   }
 
-  var query = "SELECT COUNT(*) as count FROM leaderboard";
-  db.get(query, function(err, row){
-    // errors?
-    if (err !== null) {
-      console.log(err);
-      next(err);
-    }
-    // If we have less than 5 entries in leaderboard, user has automatically a place on leaderboard as we can't compare yet.
-    if (row.count < 5) {
-      return true;
-    }
-    else {
-      // We compare user time with the 'least' great score among the 5 best score
-      var query = "SELECT time from (SELECT  time from leaderboard ORDER BY time LIMIT 5) ORDER BY time desc";
-      // 100 120 130 150 200 250 290
-      // 190
-      db.get(query, function(err, row){
-        // errors?
-        if (err !== null) {
-          console.log(err);
-          next(err);
-        }
-        else {
-          return time < row.time;
-        }
-      });
-    }
-  });
 }
 
 module.exports = router;
