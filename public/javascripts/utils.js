@@ -1,6 +1,8 @@
 // Add sleep timer
 function sleep (time) {
-  return new Promise((resolve) => setTimeout(resolve, time));
+  return new Promise(function(resolve){
+    setTimeout(resolve, time);
+  });
 }
 
 // cookies

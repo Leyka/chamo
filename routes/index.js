@@ -43,11 +43,8 @@ router.get('/play', function(req, res, next) {
 router.post('/check', function(req, res, next) {
   var time = parseInt(Object.keys(req.body)[0]); // To refactor/Tempfix... Basically, we get a json object ex. {'615': ''}
   checkIfLeaderboard(time, next, function(response){
-    console.log(response);
     res.send(response);
-  })
-
-  //res.send(checkIfLeaderboard(time, next));
+  });
 });
 
 /* POST save user score in leaderboard */
@@ -59,39 +56,37 @@ router.post('/save', function(req, res, next) {
   var time = parseInt(data.time);
 
   // Recheck if user can be on leaderboard (Obviously, user can hack his time on client side)
-  checkIfLeaderboard(time, next, function(result){
-    if (result === false) {
-      return res.send({redirect: '/', hacker: true});
-    }
-  })
+  checkIfLeaderboard(time, next, function(in_leaderboard){
 
-  if (!name) {
-    name = "Anonymous";
-  }
+    if (in_leaderboard) {
+      name = name ? name : "Anonymous";
+      var date = moment().format("MMM Do YYYY");
+      ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
-  var date = moment().format("MMM Do YYYY");
-  ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-  // Make sure to not save the same data
-  var query = "SELECT * FROM leaderboard WHERE name=? AND time=? AND ip=?";
-  db.get(query, name, time, ip, function(err, row){
-    if (row === undefined) {
-      var query = "INSERT INTO leaderboard (name,time,date,ip) VALUES(?,?,?,?)";
-      db.run(query, name, time, date, ip, function(err){
-        if (err !== null) {
-          console.log(err);
-          next(err);
+      // Make sure to not save the same data
+      var query = "SELECT * FROM leaderboard WHERE name=? AND time=? AND ip=?";
+      db.get(query, name, time, ip, function(err, row){
+        if (row === undefined) {
+          // We save.
+          var query = "INSERT INTO leaderboard (name,time,date,ip) VALUES(?,?,?,?)";
+          db.run(query, name, time, date, ip, function(err){
+            if (err !== null) {
+              console.log(err);
+              next(err);
+            }
+            else {
+              console.log('Timer saved!');
+            }
+          });
         }
         else {
-          console.log('saved!');
+          console.log("We won't add a new row, already exists.");
         }
       });
     }
-    else {
-      console.log("We won't add a new row, already exists.");
-    }
-    res.send({redirect: '/', hacker: false});
+    // Redirect to home page
+    res.send({redirect: '/', hacker: !in_leaderboard});
   });
-
 });
 
 function checkIfLeaderboard(time, next, callback) {
@@ -104,7 +99,6 @@ function checkIfLeaderboard(time, next, callback) {
   else {
     var query = "SELECT COUNT(*) as count FROM leaderboard";
     db.get(query, function(err, row) {
-      console.log('3- We did a query');
       // errors?
       if (err !== null) {
         console.log(err);
